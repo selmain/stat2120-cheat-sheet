@@ -1,6 +1,8 @@
 - [STAT 2120 Python Cheat Sheet](#stat-2120-python-cheat-sheet)
   - [Common Functions](#common-functions)
     - [Reading in datasets](#reading-in-datasets)
+      - [CSV (.csv)](#csv-csv)
+      - [Excel (.xls/.xlsx/etc.)](#excel-xlsxlsxetc)
   - [Subsetting, Filtering, and Selecting](#subsetting-filtering-and-selecting)
     - [Selecting rows/values](#selecting-rowsvalues)
       - [One value](#one-value)
@@ -20,21 +22,27 @@
     - [Histogram](#histogram)
     - [Scatterplot](#scatterplot)
       - [With regression line](#with-regression-line)
-    - [Labels](#labels)
+    - [Residual Plot](#residual-plot)
+    - [Labels and Axis](#labels-and-axis)
       - [Title](#title)
-      - [X-axis label](#x-axis-label)
-      - [Y-axis label](#y-axis-label)
+      - [X-axis/Y-axis label](#x-axisy-axis-label)
+      - [Axis cutoffs](#axis-cutoffs)
 
 # STAT 2120 Python Cheat Sheet
 
 ## Common Functions
 
 ### Reading in datasets
+#### CSV (.csv)
 ```python
 pd.read_csv(r"filepath")
 ```
+#### Excel (.xls/.xlsx/etc.)
+```python
+pd.read_excel(r"filepath")
+```
 
-Replace `filepath` with the filepath to the .csv data. 
+Replace `filepath` with the filepath to the dataset. 
 
 
 ## Subsetting, Filtering, and Selecting
@@ -81,7 +89,7 @@ data[['Column1', 'Column2']]
 ```
 
 ### Selecting rows and columns
-The format for subsetting in datasets is `[rows, columns]`. 
+> The format for subsetting in datasets is `[rows, columns]`. 
 
 You may use any of the previously seen techniques to subset multiple rows/columns.
 
@@ -144,17 +152,33 @@ sns.scatterplot(data = dataset, x = 'x_column', y = 'y_column')
 ```python
 sns.regplot(data = dataset, x = 'x_column', y = 'y_column')
 ```
+### Residual Plot
+```python
+sns.residplot(data = dataset, x = 'x_column', y = 'residuals')
+```
 
-### Labels
+### Labels and Axis
 #### Title
 ```python
 plt.title('Title')
 ```
-#### X-axis label
+#### X-axis/Y-axis label
+X-axis:
 ```python
 plt.xlabel('x axis')
 ```
-#### Y-axis label
+Y-axis:
 ```python
 plt.ylabel('y axis')
 ```
+#### Axis cutoffs
+X-axis:
+```python
+plt.xlim(0, 100)
+```
+Y-axis:
+```python
+plt.ylim(0,100)
+```
+Replace the values with your own lower/upper limits.
+
