@@ -3,6 +3,27 @@
     - [Reading in datasets](#reading-in-datasets)
       - [CSV (.csv)](#csv-csv)
       - [Excel (.xls/.xlsx/etc.)](#excel-xlsxlsxetc)
+    - [Printing](#printing)
+    - [Sorting](#sorting)
+    - [Rounding](#rounding)
+    - [Numerical Summaries](#numerical-summaries)
+      - [Sum](#sum)
+      - [Minimum](#minimum)
+      - [Maximum](#maximum)
+      - [Quantile](#quantile)
+      - [Mean](#mean)
+      - [Median](#median)
+      - [Standard Deviation](#standard-deviation)
+  - [Probability and Distributions](#probability-and-distributions)
+    - [Binomial Distribution](#binomial-distribution)
+      - [Specific Number of Successes (PMF)](#specific-number-of-successes-pmf)
+      - [Cumulative Probability (CDF)](#cumulative-probability-cdf)
+    - [Poisson Distribution](#poisson-distribution)
+      - [Specific Number of Successes (PMF)](#specific-number-of-successes-pmf-1)
+      - [Cumulative Probability (CDF)](#cumulative-probability-cdf-1)
+    - [Normal Distribution](#normal-distribution)
+      - [Cumulative Probability (CDF)](#cumulative-probability-cdf-2)
+      - [Z score for a specified percentile (PPF)](#z-score-for-a-specified-percentile-ppf)
   - [Subsetting, Filtering, and Selecting](#subsetting-filtering-and-selecting)
     - [Selecting rows/values](#selecting-rowsvalues)
       - [One value](#one-value)
@@ -30,6 +51,8 @@
 
 # STAT 2120 Python Cheat Sheet
 
+*Disclaimer: Variables `data` or `dataset` refer to your own list or dataframe containing the data you wish to analyse, not some external package or function.*
+
 ## Common Functions
 
 ### Reading in datasets
@@ -43,6 +66,111 @@ pd.read_excel(r"filepath")
 ```
 
 Replace `filepath` with the filepath to the dataset. 
+
+### Printing
+```python
+print("text")
+```
+
+**Tip**: You will often print statements with non-text variables mixed in with the text in this course. In order to simplify the task, try f-strings:
+
+```python
+answer = 41
+# The f-string way
+print(f"The answer is {answer}")
+# The regular way
+print("The answer is " + str(answer))
+```
+
+### Sorting
+```python
+data.sort_values(by = 'column')
+```
+Values can be sorted by multiple columns (provide a list). If you wish to sort in the descending order, include the optional `ascending = False` argument.
+
+### Rounding
+```python
+round(value, 3)
+```
+The second argument is the amount of decimal digits. 
+
+### Numerical Summaries
+
+#### Sum
+```python
+np.sum(data)
+```
+#### Minimum
+```python
+np.min(data)
+```
+#### Maximum
+```python
+np.max(data)
+```
+#### Quantile
+```python
+np.quantile(data, .25)
+```
+The second argument is the quantile you wish to calculate (between 0 and 1). Example: 25th quantile is .25, etc.
+#### Mean
+```python
+np.mean(data)
+```
+#### Median
+```python
+np.median(data)
+```
+#### Standard Deviation
+```python
+np.std(data)
+```
+You may also specify degrees of freedom with the `ddof` argument. 
+
+
+## Probability and Distributions
+
+### Binomial Distribution
+#### Specific Number of Successes (PMF)
+```python
+stats.binom.pmf(k, n, p)
+```
+* **k**: Number of successes
+* **n**: Number of trials
+* **p**: Probability of success
+#### Cumulative Probability (CDF)
+```python
+stats.binom.cdf(k, n, p)
+```
+* **k**: Upper limit (*P(X less than or equal k)*)
+* **n**: Number of trials
+* **p**: Probability of success
+
+### Poisson Distribution
+#### Specific Number of Successes (PMF)
+```python
+stats.poisson.pmf(k, mu)
+```
+* **k**: Number of successes
+* **mu**: Mean number of successes
+#### Cumulative Probability (CDF)
+```python
+stats.poisson.cdf(k, mu)
+```
+* **k**: Upper limit (*P(X less than or equal k)*)
+* **mu**: Mean number of successes
+
+### Normal Distribution
+#### Cumulative Probability (CDF)
+```python
+stats.norm.cdf(z)
+```
+* **z**: Upper bound for z-score (*P(Z less than or equal z)*)
+#### Z score for a specified percentile (PPF)
+```python
+stats.norm.pmf(percentile)
+```
+* **percentile**: Percentile (0-1). Useful for finding confidence intervals (e.g. Upper limit of a 95% CI is .975)
 
 
 ## Subsetting, Filtering, and Selecting
@@ -113,12 +241,16 @@ The following operators can be used to set the criteria for both categorical and
 
 Operator | Usage | 
 ---------|----------|
- `==` | Equal ($=$) |
- `!=` | Not Equal ($\neq$)|
- `<` | Less than ($<$) |
- `>` | Greater than ($>$) |
- `<=` | Less than or equal ($\leq$) |
- `>=` | Greater than or equal ($\geq$) |
+ `==` | Equal|
+ `!=` | Not Equal|
+ `<` | Less than |
+ `>` | Greater than|
+ `<=` | Less than or equal|
+ `>=` | Greater than or equal|
+
+ You may also have multiple conditions with `and` and `or` operators.
+
+The `or` operator is a logical OR. If two or more conditions are met, `or` will still select them. 
 
 ## Plotting
 
