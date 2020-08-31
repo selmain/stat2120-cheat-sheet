@@ -14,6 +14,7 @@
       - [Mean](#mean)
       - [Median](#median)
       - [Standard Deviation](#standard-deviation)
+      - [Ceiling/Floor](#ceilingfloor)
   - [Probability and Distributions](#probability-and-distributions)
     - [Binomial Distribution](#binomial-distribution)
       - [Specific Number of Successes (PMF)](#specific-number-of-successes-pmf)
@@ -24,6 +25,9 @@
     - [Normal Distribution](#normal-distribution)
       - [Cumulative Probability (CDF)](#cumulative-probability-cdf-2)
       - [Z score for a specified percentile (PPF)](#z-score-for-a-specified-percentile-ppf)
+    - [T Distribution](#t-distribution)
+      - [Cumulative Probability (CDF)](#cumulative-probability-cdf-3)
+      - [Z score for a specified percentile (PPF)](#z-score-for-a-specified-percentile-ppf-1)
   - [Subsetting, Filtering, and Selecting](#subsetting-filtering-and-selecting)
     - [Selecting rows/values](#selecting-rowsvalues)
       - [One value](#one-value)
@@ -48,6 +52,8 @@
       - [Title](#title)
       - [X-axis/Y-axis label](#x-axisy-axis-label)
       - [Axis cutoffs](#axis-cutoffs)
+  - [Hypothesis Testing](#hypothesis-testing)
+  - [Regression](#regression)
 
 # STAT 2120 Python Cheat Sheet
 
@@ -126,7 +132,15 @@ np.median(data)
 np.std(data)
 ```
 You may also specify degrees of freedom with the `ddof` argument. 
-
+#### Ceiling/Floor
+Ceiling (rounding up)
+```python
+np.ceil(number)
+```
+Floor (rounding down)
+```python
+np.floor(number)
+```
 
 ## Probability and Distributions
 
@@ -168,9 +182,22 @@ stats.norm.cdf(z)
 * **z**: Upper bound for z-score (*P(Z less than or equal z)*)
 #### Z score for a specified percentile (PPF)
 ```python
-stats.norm.pmf(percentile)
+stats.norm.ppf(percentile)
 ```
 * **percentile**: Percentile (0-1). Useful for finding confidence intervals (e.g. Upper limit of a 95% CI is .975)
+
+### T Distribution
+#### Cumulative Probability (CDF)
+```python
+stats.t.cdf(t)
+```
+* **t**: Upper bound for t-score
+#### Z score for a specified percentile (PPF)
+```python
+stats.t.ppf(percentile, df = number)
+```
+* **percentile**: Percentile (0-1). Useful for finding confidence intervals (e.g. Upper limit of a 95% CI is .975)
+* **df**: Degrees of freedom (make sure to explicitly define this argument, e.g. `df = 3`)
 
 
 ## Subsetting, Filtering, and Selecting
@@ -314,3 +341,11 @@ plt.ylim(0,100)
 ```
 Replace the values with your own lower/upper limits.
 
+
+## Hypothesis Testing
+
+**WIP**
+
+## Regression
+
+**WIP** 
