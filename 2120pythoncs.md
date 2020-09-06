@@ -7,6 +7,7 @@
     - [Sorting](#sorting)
     - [Rounding](#rounding)
     - [Numerical Summaries](#numerical-summaries)
+      - [Summary](#summary)
       - [Sum](#sum)
       - [Minimum](#minimum)
       - [Maximum](#maximum)
@@ -52,12 +53,30 @@
       - [Title](#title)
       - [X-axis/Y-axis label](#x-axisy-axis-label)
       - [Axis cutoffs](#axis-cutoffs)
-  - [Hypothesis Testing](#hypothesis-testing)
+  - [Hypothesis Testing and Confidence Intervals](#hypothesis-testing-and-confidence-intervals)
+    - [Z-tests](#z-tests)
+      - [Confidence Interval](#confidence-interval)
+    - [Student t-tests](#student-t-tests)
+      - [Single Sample](#single-sample)
+      - [Two Sample](#two-sample)
+      - [Paired](#paired)
+      - [Confidence Interval](#confidence-interval-1)
   - [Regression](#regression)
+    - [Fit a model](#fit-a-model)
+    - [Show Model](#show-model)
+    - [Linear Regression / Ordinary Least Squares](#linear-regression--ordinary-least-squares)
+      - [Adding a constant](#adding-a-constant)
+      - [Single Linear Regression](#single-linear-regression)
+      - [Multiple Linear Regression](#multiple-linear-regression)
+    - [Testing and Assessment](#testing-and-assessment)
+      - [T-test for slope](#t-test-for-slope)
+      - [ANOVA F-Test](#anova-f-test)
+      - [R-Squared](#r-squared)
+      - [Adjusted R-Squared](#adjusted-r-squared)
 
 # STAT 2120 Python Cheat Sheet
 
-*Disclaimer: Variables `data` or `dataset` refer to your own list or dataframe containing the data you wish to analyse, not some external package or function.*
+*Disclaimer: Variables `data`, `dataset`, etc. refer to your own array or dataframe containing the data you wish to analyse, not some external package or function. Change the variable name to the variable you're interested in intearcting with.*
 
 ## Common Functions
 
@@ -92,7 +111,7 @@ print("The answer is " + str(answer))
 ```python
 data.sort_values(by = 'column')
 ```
-Values can be sorted by multiple columns (provide a list). If you wish to sort in the descending order, include the optional `ascending = False` argument.
+Values can be sorted by multiple columns (provide an array). If you wish to sort in the descending order, include the optional `ascending = False` argument.
 
 ### Rounding
 ```python
@@ -101,6 +120,12 @@ round(value, 3)
 The second argument is the amount of decimal digits. 
 
 ### Numerical Summaries
+
+#### Summary
+```python
+data.describe()
+```
+Provides basic summaries for each column (5 number summary, mean, standard deviation))
 
 #### Sum
 ```python
@@ -203,7 +228,7 @@ stats.t.ppf(percentile, df = number)
 ## Subsetting, Filtering, and Selecting
 
 ### Selecting rows/values
-> Python indexing starts at 0, not 1. If you wish to select the first value of a list/dataset, use 0, etc. 
+> Python indexing starts at 0, not 1. If you wish to select the first value of a array/dataset, use 0, etc. 
 #### One value
 ```python
 data[5]
@@ -237,7 +262,7 @@ data.Column
 ```
 
 #### Multiple columns
-You may also select multiple columns at once with a list:
+You may also select multiple columns at once with an array:
 
 ```python
 data[['Column1', 'Column2']]
@@ -342,10 +367,114 @@ plt.ylim(0,100)
 Replace the values with your own lower/upper limits.
 
 
-## Hypothesis Testing
+## Hypothesis Testing and Confidence Intervals
+
+**Disclaimer**: You will often be asked to conduct each step of testing without using external testing functions like the ones listed below. Do not use these functions if you're asked to run these tests by hand. 
+
+### Z-tests
 
 **WIP**
 
-## Regression
+#### Confidence Interval
+```python
+stats.norm.interval(cl, loc, scale)
+```
+* `cl`: Confidence level (1 - alpha)
+* `loc`: Mean
+* `scale`: Standard Deviation of the **mean**
 
-**WIP** 
+### Student t-tests
+
+#### Single Sample
+```python
+stats.ttest_1samp(data.Column, exp_mean)
+```
+* `data.Column`: Sample column/array you're interested in testing
+* `exp_mean`: expected mean of the sample for the null hypothesis
+
+#### Two Sample
+```python
+stats.ttest_ind(data.Column1, data.Column2) 
+```
+* `data.Column1`, `data.ample_standard_errorColumn2`: Columns/arrays for samples
+
+#### Paired
+```python
+stats.ttest_rel(data.Column1, data.Column2)
+```
+* `data.Column1`, `data.Column2`: Columns/arrays for samples
+
+#### Confidence Interval
+```python
+stats.t.interval(cl, df, loc, scale)
+```
+* `cl`: Confidence level (1 - alpha)
+* `df`: Degrees of freedom
+* `loc`: Sample mean
+* `scale`: Sample standard error
+
+
+## Regression
+`model` refers to the model you're trying to fit, not to a package. Change the variable name as needed.
+
+### Fit a model
+```python
+model.fit()
+```
+Model must be an object created from earlier model creation process (e.g. `sm.OLS()` process). Make sure to save the model by assigning it to a variable.
+
+> Tip: Run the model creation and fitting process into one line (e.g. `sm.OLS(y, X).fit()`). This eliminates any confusion that might arise from assigning each step to a variable.
+
+### Show Model
+All models fitted with the `scipy` package are saved as model objects.
+To examine those models, run this method on your model object:
+```python
+model.summary()
+```
+This summary (when used on Linear Regression models) shows least square line slope estimates, 95% CI for slopes, and various testing results (ANOVA F-test, R^2/Adjusted R^2, T-test for individual slopes).
+
+### Linear Regression / Ordinary Least Squares
+
+#### Adding a constant
+```python
+X = model.add_constant(X)
+```
+* `X`: Predictor variable(s)
+
+#### Single Linear Regression
+```python
+sm.OLS(y, X)
+```
+* `y`: Dependent variable column/array
+* `X`: Predictor variable column. Don't forget to [add a constant](#adding-a-constant)!
+
+#### Multiple Linear Regression
+```python
+sm.OLS(y, X)
+```
+* `y`: Dependent variable column/array
+* `X`: Predictor variable **columns**. Don't forget to [add a constant](#adding-a-constant)!
+
+The function/process is the same for SLR and MLR. However, if you're interested in MLR, `X` must contain multiple columns.
+
+### Testing and Assessment
+
+#### T-test for slope
+See [Model Summary](#show-model)
+
+#### ANOVA F-Test
+
+See [Model Summary](#show-model)
+
+#### R-Squared
+```python
+model.rsquared
+```
+Also see [Model Summary](#show-model)
+
+#### Adjusted R-Squared
+```python
+model.rsquared_adj
+```
+Also see [Model Summary](#show-model)
+
