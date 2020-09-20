@@ -12,8 +12,8 @@ If you have any questions, comments, or concerns, contact [me](sl7tcu@virginia.e
   - [x] Random Number Generation
   - [x] Distribution functions
   - [ ] Image representations of distributions/functions
-- [ ] Plotting
-  - [ ] Visual plot examples
+- [x] Plotting
+  - [x] Visual plot examples
   - [x] Lists of useful arguments for each plot type
 - [x] Hypothesis Testing
   - [x] Sample tests
