@@ -17,6 +17,11 @@
       - [Standard Deviation](#standard-deviation)
       - [Ceiling/Floor](#ceilingfloor)
   - [Probability and Distributions](#probability-and-distributions)
+    - [Random Numbers](#random-numbers)
+      - [Set Seed](#set-seed)
+      - [Random Integer](#random-integer)
+      - [Random Float (Real Number)](#random-float-real-number)
+      - [Random Collection from List](#random-collection-from-list)
     - [Binomial Distribution](#binomial-distribution)
       - [Specific Number of Successes (PMF)](#specific-number-of-successes-pmf)
       - [Cumulative Probability (CDF)](#cumulative-probability-cdf)
@@ -40,6 +45,7 @@
       - [Using column names (loc)](#using-column-names-loc)
       - [Using column index (iloc)](#using-column-index-iloc)
     - [Selecting using a criteria](#selecting-using-a-criteria)
+    - [Drop/Remove Value](#dropremove-value)
   - [Plotting](#plotting)
     - [Bar graph](#bar-graph)
       - [Frequency (Counts)](#frequency-counts)
@@ -73,6 +79,7 @@
       - [ANOVA F-Test](#anova-f-test)
       - [R-Squared](#r-squared)
       - [Adjusted R-Squared](#adjusted-r-squared)
+  - [Additional Documentation](#additional-documentation)
 
 # STAT 2120 Python Cheat Sheet
 
@@ -90,7 +97,7 @@ pd.read_csv(r"filepath")
 pd.read_excel(r"filepath")
 ```
 
-Replace `filepath` with the filepath to the dataset. 
+Replace `filepath` with the filepath to the dataset. Make sure to keep the r in front of the string - this is a special type of the string that will not use special characters and thus read your entire file path literally (this prevents a lot of filepath issues).
 
 ### Printing
 ```python
@@ -131,31 +138,38 @@ Provides basic summaries for each column (5 number summary, mean, standard devia
 ```python
 np.sum(data)
 ```
+* `data`: Column or array
 #### Minimum
 ```python
 np.min(data)
 ```
+* `data`: Column or array
 #### Maximum
 ```python
 np.max(data)
 ```
+* `data`: Column or array
 #### Quantile
 ```python
 np.quantile(data, .25)
 ```
+* `data`: Column or array
 The second argument is the quantile you wish to calculate (between 0 and 1). Example: 25th quantile is .25, etc.
 #### Mean
 ```python
 np.mean(data)
 ```
+* `data`: Column or array
 #### Median
 ```python
 np.median(data)
 ```
+* `data`: Column or array
 #### Standard Deviation
 ```python
 np.std(data)
 ```
+* `data`: Column or array
 You may also specify degrees of freedom with the `ddof` argument. 
 #### Ceiling/Floor
 Ceiling (rounding up)
@@ -168,6 +182,50 @@ np.floor(number)
 ```
 
 ## Probability and Distributions
+
+### Random Numbers
+
+#### Set Seed
+You may wish to set a certain seed in order to have replicable results. 
+```python
+random.seed(seed)
+```
+* `seed`: Seed
+
+Note that the seed resets after a random function runs. You will need to set the seed **after each random operation** if you wish to have the same exact results throughout the script.
+
+This is generally not required in this course, but may be essential for group work and communication.
+
+#### Random Integer
+The following are equivalent; `randint()` is an inclusive version of `randrange`. Of course, the `+1` at the end of randint isn't required.
+```python
+# randrange() [non-inclusive end]
+random.randrange(a, b)
+# randint() [inclusive end]
+random.randint(a, b+1)
+```
+* `a`: Start of range
+* `b`: End of range
+
+#### Random Float (Real Number)
+* `random.random()`: A random float (a number with decimals) between 0 and 1.
+* `random.uniform(a, b)`: A random float (a number with decimals) between a and b (inclusive)
+```python
+# 0 <= x <= 1
+random.random()
+# a <= x <= b
+random.uniform(a,b)
+```
+
+#### Random Collection from List
+```python
+# Single Choice
+random.choice(data)
+# Multiple choices (list)
+random.choices(data, k=n)
+```
+* `data`: Sample space list
+* `n`: Number of trials
 
 ### Binomial Distribution
 #### Specific Number of Successes (PMF)
@@ -302,43 +360,84 @@ Operator | Usage |
 
  You may also have multiple conditions with `and` and `or` operators.
 
-The `or` operator is a logical OR. If two or more conditions are met, `or` will still select them. 
+The `or` operator is a logical OR. If more than one condition is met, `or` will still select the row. 
+
+### Drop/Remove Value
+```python
+pd.drop(i)
+```
+* `i`: Index or label of the value. 
+
+For more than one value, use the other selection methods listed in this section.
 
 ## Plotting
 
 For all of the examples below, replace `dataset`, `x_column`, `y_column`, `column` etc. with your own variables.
 
+The images below show the default for each one using the OSU Beer BAC Study data.
+
 ### Bar graph
 #### Frequency (Counts)
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/countplot.png)
 ```python
 sns.countplot(data = dataset, x = 'x_column')
 ```
+Useful optional arguments:
+* `orient` - Orientation of the plot (`v` for vertical, `h` for horizontal)
+
 #### Proportions
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/barplot.png)
 ```python
 sns.barplot(data = dataset, x = 'x_column', y = 'y_column')
 ```
+Usful optional arguments:
+* `order`: Order of the bars (accepts a list of column name strings)
+* `estimator`: Statistical function for the bin height; `np.mean` by default
+* `ci`: Confidence Interval size (0-100). Use `None` if you want to remove the CI.
+* `orient`: Orientation of the plot (`v` for vertical, `h` for horizontal)
 
 ### Box plot
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/boxplot.png)
 ```python
 sns.boxplot(data = dataset, y = 'y_column')
 ```
+Useful optional arguments:
+* **`x`: x-axis column. You may plot multiple boxplots for various levels of a categorical variable using this argument.**
+* `orient`: Orientation of the plot (`v` for vertical, `h` for horizontal)
+* `order`: Order of the boxplots (list of column names)
 
 ### Histogram
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/histogram.png)
 ```python
 sns.distplot(dataset.Column)
 ```
+Useful optional arguments:
+* `bins` - # of bins
+* `kde` - **Density curve (you will generally want to set this to `False`)**
+* `norm_hist` - Show density instead of count / Normalize histogram (`True`/`False`)
 
 ### Scatterplot
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/scatterplot.png)
 ```python
 sns.scatterplot(data = dataset, x = 'x_column', y = 'y_column')
 ```
+Useful optional arguments:
+* `hue`:  Point color by variable (Categorical Variable)
+* `style` - Point graphic by variable (Categorical variable)
+
 #### With regression line
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/regplot.png)
 ```python
 sns.regplot(data = dataset, x = 'x_column', y = 'y_column')
 ```
+Useful optional arguments:
+* `ci` - Confidence interval size (0-100 or `None` for no CI)
+* `scatter` - Plot scatterplot (`False` to disable the scatterplot)
+
 ### Residual Plot
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/residualplot.png)
 ```python
-sns.residplot(data = dataset, x = 'x_column', y = 'residuals')
+sns.residplot(data = dataset, x = 'x_column', y = 'y_column')
 ```
 
 ### Labels and Axis
@@ -373,7 +472,7 @@ Replace the values with your own lower/upper limits.
 
 ### Z-tests
 
-**WIP**
+See the lecture scripts for One Sample, Two Sample, One Proportion, and Two Proportion Z-tests.
 
 #### Confidence Interval
 ```python
@@ -478,3 +577,10 @@ model.rsquared_adj
 ```
 Also see [Model Summary](#show-model)
 
+## Additional Documentation
+* NumPy: https://numpy.org/doc/
+* Pandas: https://pandas.pydata.org/docs/reference/index.html#api
+* Scipy (Stats): https://docs.scipy.org/doc/scipy/reference/tutorial/stats.html
+* Seaborn: https://seaborn.pydata.org/api.html
+* Statsmodels: https://www.statsmodels.org/stable/api.html
+* random: https://docs.python.org/3/library/random.html
