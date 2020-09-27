@@ -30,10 +30,10 @@
       - [Cumulative Probability (CDF)](#cumulative-probability-cdf-1)
     - [Normal Distribution](#normal-distribution)
       - [Cumulative Probability (CDF)](#cumulative-probability-cdf-2)
-      - [Z score for a specified percentile (PPF)](#z-score-for-a-specified-percentile-ppf)
+      - [Z score for a specified cumulative probability (PPF)](#z-score-for-a-specified-cumulative-probability-ppf)
     - [T Distribution](#t-distribution)
       - [Cumulative Probability (CDF)](#cumulative-probability-cdf-3)
-      - [Z score for a specified percentile (PPF)](#z-score-for-a-specified-percentile-ppf-1)
+      - [Z score for a specified percentile (PPF)](#z-score-for-a-specified-percentile-ppf)
   - [Subsetting, Filtering, and Selecting](#subsetting-filtering-and-selecting)
     - [Selecting rows/values](#selecting-rowsvalues)
       - [One value](#one-value)
@@ -49,7 +49,7 @@
   - [Plotting](#plotting)
     - [Bar graph](#bar-graph)
       - [Frequency (Counts)](#frequency-counts)
-      - [Proportions](#proportions)
+      - [Proportions/Means/etc.](#proportionsmeansetc)
     - [Box plot](#box-plot)
     - [Histogram](#histogram)
     - [Scatterplot](#scatterplot)
@@ -75,8 +75,8 @@
       - [Single Linear Regression](#single-linear-regression)
       - [Multiple Linear Regression](#multiple-linear-regression)
     - [Testing and Assessment](#testing-and-assessment)
-      - [T-test for slope](#t-test-for-slope)
-      - [ANOVA F-Test](#anova-f-test)
+      - [t-test for slope](#t-test-for-slope)
+      - [(ANOVA) Global F-Test](#anova-global-f-test)
       - [R-Squared](#r-squared)
       - [Adjusted R-Squared](#adjusted-r-squared)
   - [Additional Documentation](#additional-documentation)
@@ -84,6 +84,8 @@
 # STAT 2120 Python Cheat Sheet
 
 *Disclaimer: Variables `data`, `dataset`, etc. refer to your own array or dataframe containing the data you wish to analyse, not some external package or function. Change the variable name to the variable you're interested in intearcting with.*
+
+---
 
 ## Common Functions
 
@@ -181,6 +183,8 @@ Floor (rounding down)
 np.floor(number)
 ```
 
+---
+
 ## Probability and Distributions
 
 ### Random Numbers
@@ -228,6 +232,7 @@ random.choices(data, k=n)
 * `n`: Number of trials
 
 ### Binomial Distribution
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/binom.png)
 #### Specific Number of Successes (PMF)
 ```python
 stats.binom.pmf(k, n, p)
@@ -244,6 +249,7 @@ stats.binom.cdf(k, n, p)
 * **p**: Probability of success
 
 ### Poisson Distribution
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/poisson.png)
 #### Specific Number of Successes (PMF)
 ```python
 stats.poisson.pmf(k, mu)
@@ -258,18 +264,22 @@ stats.poisson.cdf(k, mu)
 * **mu**: Mean number of successes
 
 ### Normal Distribution
+![credit to Matt Bognar (U. of Iowa) for Normal Dist Applet (https://homepage.divms.uiowa.edu/~mbognar/applets/normal.html)](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/normal.png)
 #### Cumulative Probability (CDF)
+(Red Area on the above image)
 ```python
 stats.norm.cdf(z)
 ```
 * **z**: Upper bound for z-score (*P(Z less than or equal z)*)
-#### Z score for a specified percentile (PPF)
+#### Z score for a specified cumulative probability (PPF)
+(Blue line on the above image)
 ```python
 stats.norm.ppf(percentile)
 ```
-* **percentile**: Percentile (0-1). Useful for finding confidence intervals (e.g. Upper limit of a 95% CI is .975)
+* **percentile**: Cumulative probability/percentile (0-1). Useful for finding confidence intervals and critical values (e.g. Upper limit of a 95% CI is .975)
 
 ### T Distribution
+![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/t_df99.png)
 #### Cumulative Probability (CDF)
 ```python
 stats.t.cdf(t)
@@ -282,6 +292,7 @@ stats.t.ppf(percentile, df = number)
 * **percentile**: Percentile (0-1). Useful for finding confidence intervals (e.g. Upper limit of a 95% CI is .975)
 * **df**: Degrees of freedom (make sure to explicitly define this argument, e.g. `df = 3`)
 
+---
 
 ## Subsetting, Filtering, and Selecting
 
@@ -307,7 +318,6 @@ The lower limit is inclusive, the upper limit is **not** inclusive.
 You may leave either the lower bound or the upper bound blank in order to select from the start/through the end.
 
 ### Selecting columns
-
 #### One Column
 ```python
 data['Column']
@@ -370,6 +380,8 @@ pd.drop(i)
 
 For more than one value, use the other selection methods listed in this section.
 
+---
+
 ## Plotting
 
 For all of the examples below, replace `dataset`, `x_column`, `y_column`, `column` etc. with your own variables.
@@ -385,7 +397,7 @@ sns.countplot(data = dataset, x = 'x_column')
 Useful optional arguments:
 * `orient` - Orientation of the plot (`v` for vertical, `h` for horizontal)
 
-#### Proportions
+#### Proportions/Means/etc.
 ![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/barplot.png)
 ```python
 sns.barplot(data = dataset, x = 'x_column', y = 'y_column')
@@ -465,6 +477,7 @@ plt.ylim(0,100)
 ```
 Replace the values with your own lower/upper limits.
 
+---
 
 ## Hypothesis Testing and Confidence Intervals
 
@@ -497,12 +510,14 @@ stats.ttest_ind(data.Column1, data.Column2)
 ```
 * `data.Column1`, `data.ample_standard_errorColumn2`: Columns/arrays for samples
 
+Returns a t statistic and a p value for a two-tailed test.
 #### Paired
 ```python
 stats.ttest_rel(data.Column1, data.Column2)
 ```
 * `data.Column1`, `data.Column2`: Columns/arrays for samples
 
+Returns a t statistic and a p value for a two tailed test.
 #### Confidence Interval
 ```python
 stats.t.interval(cl, df, loc, scale)
@@ -512,6 +527,7 @@ stats.t.interval(cl, df, loc, scale)
 * `loc`: Sample mean
 * `scale`: Sample standard error
 
+---
 
 ## Regression
 `model` refers to the model you're trying to fit, not to a package. Change the variable name as needed.
@@ -558,10 +574,10 @@ The function/process is the same for SLR and MLR. However, if you're interested 
 
 ### Testing and Assessment
 
-#### T-test for slope
+#### t-test for slope
 See [Model Summary](#show-model)
 
-#### ANOVA F-Test
+#### (ANOVA) Global F-Test
 
 See [Model Summary](#show-model)
 
@@ -576,6 +592,8 @@ Also see [Model Summary](#show-model)
 model.rsquared_adj
 ```
 Also see [Model Summary](#show-model)
+
+---
 
 ## Additional Documentation
 * NumPy: https://numpy.org/doc/

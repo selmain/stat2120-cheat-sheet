@@ -8,10 +8,10 @@ If you have any questions, comments, or concerns, contact [me](sl7tcu@virginia.e
 
 ## Progress
 - [x] Common functions/basic num. summaries
-- [ ] Probability Distributions
+- [x] Probability Distributions
   - [x] Random Number Generation
   - [x] Distribution functions
-  - [ ] Image representations of distributions/functions
+  - [x] Image representations of distributions/functions
 - [x] Plotting
   - [x] Visual plot examples
   - [x] Lists of useful arguments for each plot type
