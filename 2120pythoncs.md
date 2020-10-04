@@ -20,7 +20,7 @@
     - [Random Numbers](#random-numbers)
       - [Set Seed](#set-seed)
       - [Random Integer](#random-integer)
-      - [Random Float (Real Number)](#random-float-real-number)
+      - [Random Float (Real Number/Decimals)](#random-float-real-numberdecimals)
       - [Random Collection from List](#random-collection-from-list)
     - [Binomial Distribution](#binomial-distribution)
       - [Specific Number of Successes (PMF)](#specific-number-of-successes-pmf)
@@ -70,9 +70,10 @@
   - [Regression](#regression)
     - [Fit a model](#fit-a-model)
     - [Show Model](#show-model)
+    - [Predict using the model](#predict-using-the-model)
     - [Linear Regression / Ordinary Least Squares](#linear-regression--ordinary-least-squares)
       - [Adding a constant](#adding-a-constant)
-      - [Single Linear Regression](#single-linear-regression)
+      - [Simple Linear Regression](#simple-linear-regression)
       - [Multiple Linear Regression](#multiple-linear-regression)
     - [Testing and Assessment](#testing-and-assessment)
       - [t-test for slope](#t-test-for-slope)
@@ -99,7 +100,7 @@ pd.read_csv(r"filepath")
 pd.read_excel(r"filepath")
 ```
 
-Replace `filepath` with the filepath to the dataset. Make sure to keep the r in front of the string - this is a special type of the string that will not use special characters and thus read your entire file path literally (this prevents a lot of filepath issues).
+Replace `filepath` with the filepath to the dataset. Make sure to keep the `r` in front of the string - this is a special type of strings that will not use special characters and thus will read your entire file path literally (this prevents a lot of filepath issues).
 
 ### Printing
 ```python
@@ -172,6 +173,7 @@ np.median(data)
 np.std(data)
 ```
 * `data`: Column or array
+
 You may also specify degrees of freedom with the `ddof` argument. 
 #### Ceiling/Floor
 Ceiling (rounding up)
@@ -211,7 +213,7 @@ random.randint(a, b+1)
 * `a`: Start of range
 * `b`: End of range
 
-#### Random Float (Real Number)
+#### Random Float (Real Number/Decimals)
 * `random.random()`: A random float (a number with decimals) between 0 and 1.
 * `random.uniform(a, b)`: A random float (a number with decimals) between a and b (inclusive)
 ```python
@@ -266,13 +268,13 @@ stats.poisson.cdf(k, mu)
 ### Normal Distribution
 ![credit to Matt Bognar (U. of Iowa) for Normal Dist Applet (https://homepage.divms.uiowa.edu/~mbognar/applets/normal.html)](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/normal.png)
 #### Cumulative Probability (CDF)
-(Red Area on the above image)
+(Red Area in the above image)
 ```python
 stats.norm.cdf(z)
 ```
 * **z**: Upper bound for z-score (*P(Z less than or equal z)*)
 #### Z score for a specified cumulative probability (PPF)
-(Blue line on the above image)
+(Blue line in the above image)
 ```python
 stats.norm.ppf(percentile)
 ```
@@ -287,7 +289,7 @@ stats.t.cdf(t)
 * **t**: Upper bound for t-score
 #### Z score for a specified percentile (PPF)
 ```python
-stats.t.ppf(percentile, df = number)
+stats.t.ppf(percentile, df = 3)
 ```
 * **percentile**: Percentile (0-1). Useful for finding confidence intervals (e.g. Upper limit of a 95% CI is .975)
 * **df**: Degrees of freedom (make sure to explicitly define this argument, e.g. `df = 3`)
@@ -337,7 +339,7 @@ data[['Column1', 'Column2']]
 ```
 
 ### Selecting rows and columns
-> The format for subsetting in datasets is `[rows, columns]`. 
+> In Python, the format for datatable subsets is `[rows, columns]`. 
 
 You may use any of the previously seen techniques to subset multiple rows/columns.
 
@@ -345,7 +347,7 @@ You may use any of the previously seen techniques to subset multiple rows/column
 ```python
 data.loc[0:5, 'Column']
 ```
-> `loc` indexes are inclusive. In this case, this would include rows 1 through 6, not 1 through 5.
+> `loc` indeces are inclusive. In this case, this would include rows 0 through 5, not 0 through 4.
 
 #### Using column index (iloc)
 ```python
@@ -378,7 +380,7 @@ pd.drop(i)
 ```
 * `i`: Index or label of the value. 
 
-For more than one value, use the other selection methods listed in this section.
+If you wish to drop more than one value, use the selection methods listed in this section.
 
 ---
 
@@ -481,11 +483,11 @@ Replace the values with your own lower/upper limits.
 
 ## Hypothesis Testing and Confidence Intervals
 
-**Disclaimer**: You will often be asked to conduct each step of testing without using external testing functions like the ones listed below. Do not use these functions if you're asked to run these tests by hand. 
+**Disclaimer**: You will often be asked to conduct each step of testing without using external testing functions like the ones listed below. **Do not use these functions if you're asked to run these tests by hand.**
 
 ### Z-tests
 
-See the lecture scripts for One Sample, Two Sample, One Proportion, and Two Proportion Z-tests.
+See the lecture scripts for One Sample, Two Sample, One Proportion, Two Proportion, and Paired z tests.
 
 #### Confidence Interval
 ```python
@@ -548,6 +550,12 @@ model.summary()
 ```
 This summary (when used on Linear Regression models) shows least square line slope estimates, 95% CI for slopes, and various testing results (ANOVA F-test, R^2/Adjusted R^2, T-test for individual slopes).
 
+### Predict using the model
+```python
+model.predict(X)
+```
+* `X`: Predictor **column(s)**. 
+
 ### Linear Regression / Ordinary Least Squares
 
 #### Adding a constant
@@ -556,7 +564,7 @@ X = model.add_constant(X)
 ```
 * `X`: Predictor variable(s)
 
-#### Single Linear Regression
+#### Simple Linear Regression
 ```python
 sm.OLS(y, X)
 ```
