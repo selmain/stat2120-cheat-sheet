@@ -84,7 +84,7 @@
 
 # STAT 2120 Python Cheat Sheet
 
-*Disclaimer: Variables `data`, `dataset`, etc. refer to your own array or dataframe containing the data you wish to analyse, not some external package or function. Change the variable name to the variable you're interested in intearcting with.*
+*Disclaimer: Variables `data`, `dataset`, etc. refer to your own array or dataframe containing the data you wish to analyse, not some external package or function. Change the variable name to the variable you're interested in interacting with.*
 
 ---
 
@@ -100,14 +100,14 @@ pd.read_csv(r"filepath")
 pd.read_excel(r"filepath")
 ```
 
-Replace `filepath` with the filepath to the dataset. Make sure to keep the `r` in front of the string - this is a special type of strings that will not use special characters and thus will read your entire file path literally (this prevents a lot of filepath issues).
+Replace `filepath` with the filepath to the dataset. Make sure to keep the `r` in front of the string - this is a special type of strings that will not use special characters and thus will read your entire file path "literally" (this prevents a lot of filepath issues).
 
 ### Printing
 ```python
 print("text")
 ```
 
-**Tip**: You will often print statements with non-text variables mixed in with the text in this course. In order to simplify the task, try f-strings:
+**Tip**: You will often print statements with non-text variables mixed in with the text ("strings") in this course. In order to simplify the task, try f-strings:
 
 ```python
 answer = 41
@@ -127,7 +127,7 @@ Values can be sorted by multiple columns (provide an array). If you wish to sort
 ```python
 round(value, 3)
 ```
-The second argument is the amount of decimal digits. 
+The second argument is the number of decimals. 
 
 ### Numerical Summaries
 
@@ -135,7 +135,7 @@ The second argument is the amount of decimal digits.
 ```python
 data.describe()
 ```
-Provides basic summaries for each column (5 number summary, mean, standard deviation))
+Provides basic summaries for each column (5 number summary, mean, standard deviation)
 
 #### Sum
 ```python
@@ -192,7 +192,7 @@ np.floor(number)
 ### Random Numbers
 
 #### Set Seed
-You may wish to set a certain seed in order to have replicable results. 
+You may wish to set a certain seed in order to have replicable results when generating random numbers. 
 ```python
 random.seed(seed)
 ```
@@ -203,12 +203,12 @@ Note that the seed resets after a random function runs. You will need to set the
 This is generally not required in this course, but may be essential for group work and communication.
 
 #### Random Integer
-The following are equivalent; `randint()` is an inclusive version of `randrange`. Of course, the `+1` at the end of randint isn't required.
+The following are equivalent; `randint()` is an inclusive version of `randrange`. Note that `randint()` only accepts integers.
 ```python
-# randrange() [non-inclusive end]
+# randrange() [non-inclusive]
 random.randrange(a, b)
-# randint() [inclusive end]
-random.randint(a, b+1)
+# randint() [inclusive]
+random.randint(a+1, b-1)
 ```
 * `a`: Start of range
 * `b`: End of range
@@ -278,7 +278,7 @@ stats.norm.cdf(z)
 ```python
 stats.norm.ppf(percentile)
 ```
-* **percentile**: Cumulative probability/percentile (0-1). Useful for finding confidence intervals and critical values (e.g. Upper limit of a 95% CI is .975)
+* **percentile**: Cumulative probability/percentile (0-1). Useful for finding confidence intervals and critical values.
 
 ### T Distribution
 ![](https://raw.githubusercontent.com/selmain/stat2120-cheat-sheet/master/img/t_df99.png)
@@ -291,7 +291,7 @@ stats.t.cdf(t)
 ```python
 stats.t.ppf(percentile, df = 3)
 ```
-* **percentile**: Percentile (0-1). Useful for finding confidence intervals (e.g. Upper limit of a 95% CI is .975)
+* **percentile**: Percentile (0-1). Useful for finding confidence intervals.
 * **df**: Degrees of freedom (make sure to explicitly define this argument, e.g. `df = 3`)
 
 ---
@@ -315,7 +315,7 @@ or
 ```python
 data[0:5]
 ```
-The lower limit is inclusive, the upper limit is **not** inclusive.
+The lower limit is inclusive; the upper limit is **not** inclusive.
 
 You may leave either the lower bound or the upper bound blank in order to select from the start/through the end.
 
@@ -339,7 +339,7 @@ data[['Column1', 'Column2']]
 ```
 
 ### Selecting rows and columns
-> In Python, the format for datatable subsets is `[rows, columns]`. 
+> In Python, the format for two-dimensional dataframe subsets is `[rows, columns]`. 
 
 You may use any of the previously seen techniques to subset multiple rows/columns.
 
@@ -540,7 +540,7 @@ model.fit()
 ```
 Model must be an object created from earlier model creation process (e.g. `sm.OLS()` process). Make sure to save the model by assigning it to a variable.
 
-> Tip: Run the model creation and fitting process into one line (e.g. `sm.OLS(y, X).fit()`). This eliminates any confusion that might arise from assigning each step to a variable.
+> Tip: Run the model creation and fitting process in one line (e.g. `sm.OLS(y, X).fit()`). This eliminates any confusion that might arise from assigning each step to a variable.
 
 ### Show Model
 All models fitted with the `scipy` package are saved as model objects.
